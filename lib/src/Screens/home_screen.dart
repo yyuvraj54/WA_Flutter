@@ -33,7 +33,8 @@ class _HomeState extends State<Home> {
       // Navigate to details screen when weather is fetched successfully
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => WeatherDetailsScreen(weather: weather)),
+        MaterialPageRoute(
+            builder: (context) => WeatherDetailsScreen(weather: weather)),
       );
     } catch (e) {
       print(e);
@@ -52,81 +53,81 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Weather App'),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search for a city...',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                        borderSide: BorderSide.none,
+      backgroundColor: Colors.transparent, // Make scaffold background transparent
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/back.jpg"), // Replace with your image path
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 50.0), // Adjust spacing for the title
+              Text(
+                "Welcome to Weather App",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 20.0), // Adjust spacing between title and input fields
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search for a city...',
+                          prefixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200]?.withOpacity(0.6), // Adjust opacity if needed
+                          contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                        ),
                       ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                     ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: _fetchWeather,
+                child: Text('Get Weather'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
                 ),
-                SizedBox(width: 16.0),
-                ElevatedButton(
-                  onPressed: _fetchWeather,
-                  child: Text('Get Weather'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 24.0, vertical: 12.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                  ),
+              ),
+              SizedBox(height: 16.0), // Adjust spacing between button and text
+              Text(
+                "Please enter your city to get the weather",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
                 ),
-              ],
-            ),
-          ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Lottie.asset('assets/sun.json'),
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: _isLoading
+              ),
+              SizedBox(height: 50.0), // Adjust spacing below the instructions
+              _isLoading
                   ? CircularProgressIndicator()
                   : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(_weathers?.cityName ?? "Loading weather...",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(_weathers?.temperature.toString() ?? "",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(_weathers?.description ?? "",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(_weathers?.humidity.toString() ?? "",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
+
               ),
-            ),
+              SizedBox(height: 50.0), // Adjust spacing at the bottom
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
