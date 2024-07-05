@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/src/Screens/weather_details_screen.dart';
 import 'package:weather_app/src/models/weather_model.dart';
-import 'package:weather_app/src/Services/weather_service.dart';
-
 
 String getWeatherAnimation(String mainCondition) {
-  if (mainCondition == null) return 'assets/sunny.json';
-
   switch (mainCondition.toLowerCase()) {
     case 'clouds':
     case 'mist':
@@ -33,11 +28,11 @@ String getWeatherAnimation(String mainCondition) {
   }
 }
 
-
 class WeatherDetailsScreen extends StatelessWidget {
   final Weather weather;
+  final VoidCallback onReload;
 
-  WeatherDetailsScreen({required this.weather});
+  WeatherDetailsScreen({required this.weather, required this.onReload});
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +104,33 @@ class WeatherDetailsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SizedBox(height: 16.0),
+                    // Reload Weather Button
+                    ElevatedButton.icon(
+                      onPressed: onReload,
+                      icon: Icon(Icons.refresh),
+                      label: Text('Reload Weather'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    // Search Another City Button
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Search Another City'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -119,4 +141,3 @@ class WeatherDetailsScreen extends StatelessWidget {
     );
   }
 }
-

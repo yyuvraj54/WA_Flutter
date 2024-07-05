@@ -1,63 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_app/src/Screens/weather_details_screen.dart';
-import 'package:weather_app/src/models/weather_model.dart';
-import 'package:weather_app/src/Services/weather_service.dart';
+
+
+import '../provider/weather_provider.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
-
+  const Home({Key? key}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   final TextEditingController _searchController = TextEditingController();
-  final WeatherService _weatherService = WeatherService('f69eab89030e780c9514c4820eceb91d');
-  Weather? _weathers;
-  bool _isLoading = false;
 
-  _fetchWeather() async {
-    setState(() {
-      _isLoading = true;
-    });
 
-    String cityName = _searchController.text.isNotEmpty ? _searchController.text : await _weatherService.getCurrentCity();
-    try {
-      Weather weather = await _weatherService.getWeather(cityName);
-      setState(() {
-        _weathers = weather;
-        _isLoading = false;
-      });
+  // Future<void> _loadLastCityWeather() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? lastCity = prefs.getString('last_city');
+  //   if (lastCity != null && lastCity.isNotEmpty) {
+  //     _fetchWeather(cityName: lastCity);
+  //   }
+  // }
+  //
+  // Future<void> _saveLastCityWeather(String cityName) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setString('last_city', cityName);
+  // }
 
-      // Navigate to details screen when weather is fetched successfully
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => WeatherDetailsScreen(weather: weather)),
-      );
-    } catch (e) {
-      print(e);
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchWeather();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<weatherProvider>(context);
+
     return Scaffold(
-      backgroundColor: Colors.transparent, // Make scaffold background transparent
+      backgroundColor: Colors.transparent,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/back.jpg"), // Replace with your image path
+            image: AssetImage("assets/back.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -65,7 +46,7 @@ class _HomeState extends State<Home> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 50.0), // Adjust spacing for the title
+              SizedBox(height: 50.0),
               Text(
                 "Welcome to Weather App",
                 style: TextStyle(
@@ -74,7 +55,7 @@ class _HomeState extends State<Home> {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 20.0), // Adjust spacing between title and input fields
+              SizedBox(height: 20.0),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
@@ -90,7 +71,7 @@ class _HomeState extends State<Home> {
                             borderSide: BorderSide.none,
                           ),
                           filled: true,
-                          fillColor: Colors.grey[200]?.withOpacity(0.6), // Adjust opacity if needed
+                          fillColor: Colors.grey[200]?.withOpacity(0.6),
                           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                         ),
                       ),
@@ -99,7 +80,28 @@ class _HomeState extends State<Home> {
                 ),
               ),
               ElevatedButton(
-                onPressed: _fetchWeather,
+                onPressed: () async {
+                  String cityName = _searchController.text;
+                  if (cityName.isNotEmpty) {
+
+                    await provider.fetchWeather(cityName: cityName);
+
+                    if (!provider.isLoading && provider.weather != null ) {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => WeatherDetailsScreen(weather: provider.weather!, onReload: () async {await provider.fetchWeather(cityName: cityName);},
+                          ),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Failed to fetch weather data'),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
+                    }
+                  }
+                },
                 child: Text('Get Weather'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
@@ -109,7 +111,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0), // Adjust spacing between button and text
+              SizedBox(height: 16.0),
               Text(
                 "Please enter your city to get the weather",
                 style: TextStyle(
@@ -117,14 +119,9 @@ class _HomeState extends State<Home> {
                   fontSize: 16.0,
                 ),
               ),
-              SizedBox(height: 50.0), // Adjust spacing below the instructions
-              _isLoading
-                  ? CircularProgressIndicator()
-                  : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-
-              ),
-              SizedBox(height: 50.0), // Adjust spacing at the bottom
+              SizedBox(height: 50.0),
+              provider.isLoading ? CircularProgressIndicator() : SizedBox(),
+              SizedBox(height: 50.0),
             ],
           ),
         ),
