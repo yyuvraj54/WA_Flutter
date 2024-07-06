@@ -93,6 +93,9 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Download the App
+- APK: [Download](https://mega.nz/file/nJUwDJpC#oFwPV24wXmW9xwuCcpW5HCoKYGt3BKWoaViv_1YyeFA)
+
 ## Acknowledgements
 
 - [Flutter](https://flutter.dev/)
