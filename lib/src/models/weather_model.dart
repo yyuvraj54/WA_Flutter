@@ -5,6 +5,7 @@ class Weather {
   final String description;
   final double windSpeed;
   final int humidity;
+  
 
   Weather({
     required this.cityName,

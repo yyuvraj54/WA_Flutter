@@ -14,7 +14,9 @@ class weatherProvider extends ChangeNotifier {
     try {
       Weather fetchedWeather = await weatherService.getWeather(cityName);
       weather = fetchedWeather;
-      print(weather);
+      print(weather?.cityName);
+      print(weather?.temperature);
+      print(weather?.description);
     } catch (e) {
       print('Error fetching weather data: $e');
     } finally {

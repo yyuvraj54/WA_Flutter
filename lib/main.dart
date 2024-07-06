@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Flutter Weather App',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
           useMaterial3: true,

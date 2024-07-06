@@ -7,24 +7,25 @@ String getWeatherAnimation(String mainCondition) {
     case 'clouds':
     case 'mist':
     case 'smoke':
+    case 'overcast clouds':
     case 'haze':
     case 'dust':
     case 'fog':
-      return 'assets/cloud.json'; // Return cloud animation for these conditions
+      return 'assets/cloud.json';
 
     case 'rain':
     case 'drizzle':
     case 'shower rain':
-      return 'assets/rain.json'; // Return rain animation for these conditions
+      return 'assets/rain.json';
 
     case 'thunderstorm':
-      return 'assets/thunder.json'; // Return thunderstorm animation for this condition
+      return 'assets/thunder.json';
 
     case 'clear':
-      return 'assets/sunny.json'; // Return sunny animation for clear condition
+      return 'assets/sunny.json';
 
     default:
-      return 'assets/sunny.json'; // Default to sunny animation for unknown conditions
+      return 'assets/sunny.json';
   }
 }
 
@@ -98,6 +99,11 @@ class WeatherDetailsScreen extends StatelessWidget {
                             SizedBox(height: 8.0),
                             Text(
                               'Humidity: ${weather.humidity.toString()}%',
+                              style: TextStyle(fontSize: 16, color: Colors.black),
+                            ),
+                            SizedBox(height: 8.0),
+                            Text(
+                              'Wind Speed: ${weather.windSpeed.toString()}km',
                               style: TextStyle(fontSize: 16, color: Colors.black),
                             ),
                           ],
