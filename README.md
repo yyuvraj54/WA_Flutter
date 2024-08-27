@@ -35,11 +35,6 @@ A feature-rich weather application built with Flutter and Dart. The app provides
 
 ## Getting Started
 
-### Prerequisites
-
-- Flutter SDK: [Installation Guide](https://flutter.dev/docs/get-started/install)
-- Dart SDK: Included with Flutter
-
 ### Installation
 
 1. Clone the repository:
